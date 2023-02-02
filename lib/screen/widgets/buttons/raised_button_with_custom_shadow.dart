@@ -1,41 +1,43 @@
 import 'package:flutter/material.dart';
 
-import '../../utils/colors.dart';
+import '../../../utils/colors.dart';
 
-class RaisedButtonWithWidget extends StatefulWidget {
-  final Widget widget;
+class RaisedButtonWithCustomShadow extends StatefulWidget {
+  final String title;
   final Color backgroundColor;
   final Color textColor;
   final Color shadowColor;
-  final Color disableColor;
+  final Color? disableColor;
   final Color? disableBorderColor;
   final VoidCallback onTap;
   final bool? enable;
 
-  const RaisedButtonWithWidget(
+  const RaisedButtonWithCustomShadow(
       {Key? key,
-      required this.widget,
+      required this.title,
       required this.backgroundColor,
       required this.textColor,
       required this.shadowColor,
       this.enable,
-      required this.disableColor,
+      this.disableColor,
       this.disableBorderColor,
       required this.onTap})
       : super(key: key);
 
   @override
-  State<RaisedButtonWithWidget> createState() => _RaisedButtonWithWidgetState();
+  State<RaisedButtonWithCustomShadow> createState() =>
+      _RaisedButtonWithCustomShadowState();
 }
 
-class _RaisedButtonWithWidgetState extends State<RaisedButtonWithWidget> {
+class _RaisedButtonWithCustomShadowState
+    extends State<RaisedButtonWithCustomShadow> {
   bool inPress = false;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        if (widget.enable??false) {
+        if (widget.enable ?? true) {
           inPress = true;
           if (mounted) {
             setState(() {});
@@ -50,7 +52,7 @@ class _RaisedButtonWithWidgetState extends State<RaisedButtonWithWidget> {
         }
       },
       onTapDown: (value) {
-        if (widget.enable??false) {
+        if (widget.enable ?? true) {
           inPress = true;
           if (mounted) {
             setState(() {});
@@ -58,7 +60,7 @@ class _RaisedButtonWithWidgetState extends State<RaisedButtonWithWidget> {
         }
       },
       onLongPress: () {
-        if (widget.enable??false) {
+        if (widget.enable ?? true) {
           inPress = true;
           if (mounted) {
             setState(() {});
@@ -79,27 +81,27 @@ class _RaisedButtonWithWidgetState extends State<RaisedButtonWithWidget> {
           margin: EdgeInsets.zero,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: getBackgroundColor(
-                widget.enable??false, widget.backgroundColor, widget.disableColor),
-            border: Border.all(
-                width: 1,
-                color: getBorderColor(
-                    widget.enable??false,
-                    inPress,
-                    widget.shadowColor,
-                    widget.backgroundColor,
-                    widget.disableColor,
-                    widget.disableBorderColor ?? ColorsUtil.disableButtonColor)),
+            color: getBackgroundColor(widget.enable ?? true,
+                widget.backgroundColor, widget.disableColor),
+            // border: Border.all(
+            //     width: 0.4,
+            //     color: getBorderColor(
+            //         widget.enable,
+            //         inPress,
+            //         widget.shadowColor,
+            //         widget.backgroundColor,
+            //         widget.disableColor,
+            //         widget.disableBorderColor)),
             borderRadius: BorderRadius.circular(8),
             boxShadow: <BoxShadow>[
               BoxShadow(
                   color: getBorderColor(
-                      widget.enable??false,
+                      widget.enable ?? true,
                       inPress,
                       widget.shadowColor,
                       widget.backgroundColor,
-                      widget.disableColor,
-                      widget.disableBorderColor ?? ColorsUtil.disableButtonColor),
+                      widget.disableColor ?? ColorsUtil.disableColor,
+                      widget.disableBorderColor ?? ColorsUtil.disableColor),
                   offset: const Offset(0, 4)),
               BoxShadow(
                   color: Colors.grey.withOpacity(.05),
@@ -108,7 +110,13 @@ class _RaisedButtonWithWidgetState extends State<RaisedButtonWithWidget> {
                   spreadRadius: 3)
             ],
           ),
-          child: widget.widget,
+          child: Text(
+            widget.title,
+            style: TextStyle(
+                color: widget.textColor,
+                fontSize: 18,
+                fontWeight: FontWeight.w700),
+          ),
         ),
       ),
     );

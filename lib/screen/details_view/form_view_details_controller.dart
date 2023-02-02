@@ -7,9 +7,59 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../model/demo_model.dart';
+import '../../model/form_builder_model.dart';
 
 class FormViewDetailsController {
+
+  AdditionalInformationDetailsModel detailsModel = AdditionalInformationDetailsModel();
+
+  AdditionalInformationDetailsModel getDetailsModelData() {
+   return AdditionalInformationDetailsModel(
+     code: 200,
+     message: 'Success',
+     data: [
+       Data(
+         id: 1,
+         type: 'string',
+         key: 'name',
+         label: 'Name',
+         rules: null,
+         value: 'Shahadat Hossain',
+         displayValue: 'Shahadat Hossain',
+       ),
+       Data(
+           id: 2,
+           type: "string",
+           key: "sadat",
+           label: "Name",
+           rules: null,
+           value: 'Sadat Hossain',
+           displayValue: 'Sadat Hossain'),
+       Data(
+           id: 3,
+           type: "file",
+           key: "upload_image",
+           label: "First Image",
+           rules: Rules(extensions: ["png", "jpeg", "jpg", "docx", "pdf"]),
+           value:
+           "https://s3.ap-south-1.amazonaws.com/cdn-shebadev/uploads/business/member/additional/1674708640_ms._tisha_khatunsda_upload_image.jpeg",
+           displayValue:
+           "https://s3.ap-south-1.amazonaws.com/cdn-shebadev/uploads/business/member/additional/1674708640_ms._tisha_khatunsda_upload_image.jpeg"),
+       Data(
+           id: 4,
+           type: "file",
+           key: "second_image",
+           label: "Second Image",
+           rules: Rules(extensions: ["png", "jpeg", "jpg", "docx", "pdf"]),
+           value:
+           "https://s3.ap-south-1.amazonaws.com/cdn-shebadev/uploads/business/member/additional/1674708647_ms._tisha_khatunsda_second_image.pdf",
+           displayValue:
+           "https://s3.ap-south-1.amazonaws.com/cdn-shebadev/uploads/business/member/additional/1674708647_ms._tisha_khatunsda_second_image.pdf")
+     ],
+   );
+  }
+
+  //
   bool isShowTextField(String? type) {
     if (type == 'checkbox' ||
         type == 'dropdown' ||

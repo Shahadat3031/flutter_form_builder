@@ -1,43 +1,41 @@
 import 'package:flutter/material.dart';
 
-import '../../utils/colors.dart';
+import '../../../utils/colors.dart';
 
-class RaisedButtonWithCustomShadow extends StatefulWidget {
-  final String title;
+class RaisedButtonWithWidget extends StatefulWidget {
+  final Widget widget;
   final Color backgroundColor;
   final Color textColor;
   final Color shadowColor;
-  final Color? disableColor;
+  final Color disableColor;
   final Color? disableBorderColor;
   final VoidCallback onTap;
   final bool? enable;
 
-  const RaisedButtonWithCustomShadow(
+  const RaisedButtonWithWidget(
       {Key? key,
-      required this.title,
+      required this.widget,
       required this.backgroundColor,
       required this.textColor,
       required this.shadowColor,
       this.enable,
-      this.disableColor,
+      required this.disableColor,
       this.disableBorderColor,
       required this.onTap})
       : super(key: key);
 
   @override
-  State<RaisedButtonWithCustomShadow> createState() =>
-      _RaisedButtonWithCustomShadowState();
+  State<RaisedButtonWithWidget> createState() => _RaisedButtonWithWidgetState();
 }
 
-class _RaisedButtonWithCustomShadowState
-    extends State<RaisedButtonWithCustomShadow> {
+class _RaisedButtonWithWidgetState extends State<RaisedButtonWithWidget> {
   bool inPress = false;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        if (widget.enable ?? true) {
+        if (widget.enable??false) {
           inPress = true;
           if (mounted) {
             setState(() {});
@@ -52,7 +50,7 @@ class _RaisedButtonWithCustomShadowState
         }
       },
       onTapDown: (value) {
-        if (widget.enable ?? true) {
+        if (widget.enable??false) {
           inPress = true;
           if (mounted) {
             setState(() {});
@@ -60,7 +58,7 @@ class _RaisedButtonWithCustomShadowState
         }
       },
       onLongPress: () {
-        if (widget.enable ?? true) {
+        if (widget.enable??false) {
           inPress = true;
           if (mounted) {
             setState(() {});
@@ -81,27 +79,27 @@ class _RaisedButtonWithCustomShadowState
           margin: EdgeInsets.zero,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: getBackgroundColor(widget.enable ?? true,
-                widget.backgroundColor, widget.disableColor),
-            // border: Border.all(
-            //     width: 0.4,
-            //     color: getBorderColor(
-            //         widget.enable,
-            //         inPress,
-            //         widget.shadowColor,
-            //         widget.backgroundColor,
-            //         widget.disableColor,
-            //         widget.disableBorderColor)),
+            color: getBackgroundColor(
+                widget.enable??false, widget.backgroundColor, widget.disableColor),
+            border: Border.all(
+                width: 1,
+                color: getBorderColor(
+                    widget.enable??false,
+                    inPress,
+                    widget.shadowColor,
+                    widget.backgroundColor,
+                    widget.disableColor,
+                    widget.disableBorderColor ?? ColorsUtil.disableButtonColor)),
             borderRadius: BorderRadius.circular(8),
             boxShadow: <BoxShadow>[
               BoxShadow(
                   color: getBorderColor(
-                      widget.enable ?? true,
+                      widget.enable??false,
                       inPress,
                       widget.shadowColor,
                       widget.backgroundColor,
-                      widget.disableColor ?? ColorsUtil.disableColor,
-                      widget.disableBorderColor ?? ColorsUtil.disableColor),
+                      widget.disableColor,
+                      widget.disableBorderColor ?? ColorsUtil.disableButtonColor),
                   offset: const Offset(0, 4)),
               BoxShadow(
                   color: Colors.grey.withOpacity(.05),
@@ -110,13 +108,7 @@ class _RaisedButtonWithCustomShadowState
                   spreadRadius: 3)
             ],
           ),
-          child: Text(
-            widget.title,
-            style: TextStyle(
-                color: widget.textColor,
-                fontSize: 18,
-                fontWeight: FontWeight.w700),
-          ),
+          child: widget.widget,
         ),
       ),
     );

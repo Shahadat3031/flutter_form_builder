@@ -2,10 +2,11 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:open_filex/open_filex.dart';
 
-import '../../model/demo_model.dart';
+import '../../model/form_builder_model.dart';
 import '../../utils/colors.dart';
+import '../../utils/common_methos.dart';
 import '../widgets/dynamic_text_field.dart';
-import '../widgets/raised_button_with_custom_shadow.dart';
+import '../widgets/buttons/raised_button_with_custom_shadow.dart';
 import 'additional_info_edit_controller.dart';
 
 class AdditionalInfoEditView extends StatefulWidget {
@@ -190,7 +191,7 @@ class _AdditionalInfoEditViewState extends State<AdditionalInfoEditView> {
                         }).toList(),
                         onChanged: (String? newValue) {
                           //find out the key of the selected value
-                          String? key = getKeyFromValue(
+                          String? key = CommonMethods.instance.getKeyFromValue(
                               data?.rules?.possibleValues, newValue);
                           _con.additionalInfoMap[data?.id] = key;
                           dropdownValueNotifier.value = newValue;
@@ -410,7 +411,7 @@ class _AdditionalInfoEditViewState extends State<AdditionalInfoEditView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                getTitle(data.label),
+                CommonMethods.instance.getValidatedString(data.label),
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
@@ -557,22 +558,4 @@ class _AdditionalInfoEditViewState extends State<AdditionalInfoEditView> {
     );
   }
 
-  String? getKeyFromValue(
-      List<PossibleValues>? possibleValues, String? newValue) {
-    String? key;
-    for (var element in possibleValues!) {
-      if (element.label == newValue) {
-        key = element.key;
-      }
-    }
-    return key;
-  }
-
-  String getTitle(String? title){
-    if(title !=null && title != ''){
-      return title;;
-    } else{
-      return 'N/A';
-    }
-  }
 }

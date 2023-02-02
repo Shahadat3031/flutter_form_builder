@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/utils/common_methos.dart';
 import '../../utils/colors.dart';
 
 class DynamicTextField extends StatelessWidget {
@@ -30,11 +31,10 @@ class DynamicTextField extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         TextFormField(
-          initialValue: getInitialValue(hints),
+          initialValue: CommonMethods.instance.getValidatedString(hints),
          onChanged: (value){
            onChange(value);
          },
-          // controller: _con.addressController,
           keyboardType: textInputType,
           decoration: InputDecoration(
             focusedBorder: OutlineInputBorder(
@@ -65,13 +65,5 @@ class DynamicTextField extends StatelessWidget {
         const SizedBox(height: 16),
       ],
     );
-  }
-
-  String getInitialValue(String? value){
-    if(value !=null && value.isNotEmpty){
-      return value;
-    } else{
-      return 'N/A';
-    }
   }
 }

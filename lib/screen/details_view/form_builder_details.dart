@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_form_builder/model/demo_model.dart';
+import 'package:flutter_form_builder/model/form_builder_model.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../edit_view/additional_info_edit_view.dart';
-import '../widgets/edit_additional_information_button.dart';
+import '../widgets/buttons/edit_additional_information_button.dart';
 import '../widgets/show_image_from_url.dart';
 import '../widgets/text_file_view.dart';
 import '../widgets/text_info_view.dart';
@@ -26,7 +26,11 @@ class _FormBuilderDetailsState extends State<FormBuilderDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Form Builder Details'),
+        iconTheme: const IconThemeData(
+          color: Colors.black,
+        ),
+        backgroundColor: Colors.white,
+        title: const Text('Form Builder Details', style: TextStyle(color: Colors.black)),
       ),
       body: Container(
           margin: const EdgeInsets.only(top: 32),
@@ -37,50 +41,7 @@ class _FormBuilderDetailsState extends State<FormBuilderDetails> {
   @override
   void initState() {
     super.initState();
-    //input some demo data to the demo_model.dart file AdditionalInformationDetailsModel class
-    detailsModel = AdditionalInformationDetailsModel(
-      code: 200,
-      message: 'Success',
-      data: [
-        Data(
-          id: 1,
-          type: 'string',
-          key: 'name',
-          label: 'Name',
-          rules: null,
-          value: 'Shahadat Hossain',
-          displayValue: 'Shahadat Hossain',
-        ),
-        Data(
-            id: 2,
-            type: "string",
-            key: "sadat",
-            label: "Name",
-            rules: null,
-            value: 'Sadat Hossain',
-            displayValue: 'Sadat Hossain'),
-        Data(
-            id: 3,
-            type: "file",
-            key: "upload_image",
-            label: "First Image",
-            rules: Rules(extensions: ["png", "jpeg", "jpg", "docx", "pdf"]),
-            value:
-                "https://s3.ap-south-1.amazonaws.com/cdn-shebadev/uploads/business/member/additional/1674708640_ms._tisha_khatunsda_upload_image.jpeg",
-            displayValue:
-                "https://s3.ap-south-1.amazonaws.com/cdn-shebadev/uploads/business/member/additional/1674708640_ms._tisha_khatunsda_upload_image.jpeg"),
-        Data(
-            id: 4,
-            type: "file",
-            key: "second_image",
-            label: "Second Image",
-            rules: Rules(extensions: ["png", "jpeg", "jpg", "docx", "pdf"]),
-            value:
-                "https://s3.ap-south-1.amazonaws.com/cdn-shebadev/uploads/business/member/additional/1674708647_ms._tisha_khatunsda_second_image.pdf",
-            displayValue:
-                "https://s3.ap-south-1.amazonaws.com/cdn-shebadev/uploads/business/member/additional/1674708647_ms._tisha_khatunsda_second_image.pdf")
-      ],
-    );
+    detailsModel = _con.getDetailsModelData();
   }
 
   Widget _additionalData(AdditionalInformationDetailsModel data){
