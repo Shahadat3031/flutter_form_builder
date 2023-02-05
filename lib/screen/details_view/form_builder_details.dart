@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/model/form_builder_model.dart';
+import 'package:flutter_form_builder/utils/common_methos.dart';
+import 'package:flutter_form_builder/utils/snackbar_utils.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -18,8 +20,8 @@ class FormBuilderDetails extends StatefulWidget {
 }
 
 class _FormBuilderDetailsState extends State<FormBuilderDetails> {
-
-  AdditionalInformationDetailsModel detailsModel = AdditionalInformationDetailsModel();
+  AdditionalInformationDetailsModel detailsModel =
+      AdditionalInformationDetailsModel();
   final FormViewDetailsController _con = FormViewDetailsController();
 
   @override
@@ -30,7 +32,8 @@ class _FormBuilderDetailsState extends State<FormBuilderDetails> {
           color: Colors.black,
         ),
         backgroundColor: Colors.white,
-        title: const Text('Form Builder Details', style: TextStyle(color: Colors.black)),
+        title: const Text('Form Builder Details',
+            style: TextStyle(color: Colors.black)),
       ),
       body: Container(
           margin: const EdgeInsets.only(top: 32),
@@ -44,7 +47,7 @@ class _FormBuilderDetailsState extends State<FormBuilderDetails> {
     detailsModel = _con.getDetailsModelData();
   }
 
-  Widget _additionalData(AdditionalInformationDetailsModel data){
+  Widget _additionalData(AdditionalInformationDetailsModel data) {
     return Stack(
       children: [
         ListView.builder(
@@ -53,7 +56,8 @@ class _FormBuilderDetailsState extends State<FormBuilderDetails> {
               return Column(
                 children: [
                   Visibility(
-                      visible: _con.isShowTextField(detailsModel.data![index].type),
+                      visible:
+                          _con.isShowTextField(detailsModel.data![index].type),
                       child: showText(index)),
                   Visibility(
                       visible: _con.isFileShow(detailsModel.data![index].type),
@@ -65,36 +69,46 @@ class _FormBuilderDetailsState extends State<FormBuilderDetails> {
                 ],
               );
             }),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            margin: const EdgeInsets.only(bottom: 8),
-            child: EditAdditionalInfoButton(context: context,title: 'Edit Additional Info',
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) =>
-                  AdditionalInfoEditView(
-                    additionalData: detailsModel,
-                    tabsId: 1,
-                  )),
-                );
-              },),
-          ),
-        )
+        bottomSaveButtonWidget()
       ],
     );
   }
 
-  Widget showText(int index){
+  Widget bottomSaveButtonWidget() {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 8),
+        child: EditAdditionalInfoButton(
+          context: context,
+          title: 'Edit Additional Info',
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AdditionalInfoEditView(
+                        additionalData: detailsModel,
+                        tabsId: 1,)
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget showText(int index) {
     return Column(
       children: [
         Container(
-          padding:  const EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
+          padding:
+              const EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
           child: TextFieldInformationView(
             title: detailsModel.data![index].label,
-            value: _con.getValueFromKey(detailsModel.data![index].rules?.possibleValues,
-                detailsModel.data![index].value.toString(), detailsModel.data![index].type),
+            value: _con.getValueFromKey(
+                detailsModel.data![index].rules?.possibleValues,
+                detailsModel.data![index].value.toString(),
+                detailsModel.data![index].type),
           ),
         ),
         Visibility(
@@ -103,51 +117,31 @@ class _FormBuilderDetailsState extends State<FormBuilderDetails> {
             height: 1,
           ),
         ),
-
       ],
     );
   }
 
-  Widget showFilePreview(int index){
+  Widget showFilePreview(int index) {
     return Column(
       children: [
         Container(
-          padding:  const EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
+          padding:
+              const EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
           child: TextFileInformationView(
             title: detailsModel.data![index].label,
             value: detailsModel.data![index].value,
             onTap: () {
-              //Image Showing
-              String? value, link;
-              link = detailsModel.data![index].value;
-
-              //TODO create another function for this
-              if( link != null){
-                value = link.substring(link.lastIndexOf('.') + 1);
-              }
-              if(value == 'png' || value == 'jpg' || value == 'jpeg')
-              {
-                Navigator.push(
-                  context,
-                  PageTransition(
-                    type: PageTransitionType.rightToLeft,
-                    child: ImageDetails(detailsModel.data![index].value.toString()),
-                  ),
-                );
-              } else{
-                OpenFilex.open(detailsModel.data![index].value.toString());
-              }
+              processFile(index);
             },
-            onClick: (){
+            onClick: () {
               //File Download
-              if(detailsModel.data![index].value != null){
+              if (detailsModel.data![index].value != null) {
                 _con.downloadFileFromAdditionalInformation(
                     detailsModel.data![index].value.toString(),
                     'File',
-                    context
-                );
-              } else{
-               print('No file found');
+                    context);
+              } else {
+                SnackBarUtils.instance.showSnackBar(context, 'File not found', duration: 3);
               }
             },
           ),
@@ -162,4 +156,34 @@ class _FormBuilderDetailsState extends State<FormBuilderDetails> {
     );
   }
 
+  void processFile(int index) {
+    String? extension = CommonMethods.instance
+        .getFileExtension(index, detailsModel.data![index].value);
+    if( extension !=null){
+      if (extension == 'png' ||
+          extension == 'jpg' ||
+          extension == 'jpeg' ||
+          extension == 'gif' ||
+          extension == 'bmp' ||
+          extension == 'webp' ||
+          extension == 'svg' ||
+          extension == 'tiff') {
+        gotoEditAdditionalScreen(index);
+      } else {
+        OpenFilex.open(detailsModel.data![index].value.toString());
+      }
+    } else {
+      SnackBarUtils.instance.showSnackBar(context, 'File not found', duration: 3);
+    }
+  }
+
+  void gotoEditAdditionalScreen(int index) {
+    Navigator.push(
+      context,
+      PageTransition(
+        type: PageTransitionType.rightToLeft,
+        child: ImageDetails(detailsModel.data![index].value.toString()),
+      ),
+    );
+  }
 }

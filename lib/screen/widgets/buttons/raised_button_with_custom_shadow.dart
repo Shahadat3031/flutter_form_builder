@@ -83,15 +83,6 @@ class _RaisedButtonWithCustomShadowState
           decoration: BoxDecoration(
             color: getBackgroundColor(widget.enable ?? true,
                 widget.backgroundColor, widget.disableColor),
-            // border: Border.all(
-            //     width: 0.4,
-            //     color: getBorderColor(
-            //         widget.enable,
-            //         inPress,
-            //         widget.shadowColor,
-            //         widget.backgroundColor,
-            //         widget.disableColor,
-            //         widget.disableBorderColor)),
             borderRadius: BorderRadius.circular(8),
             boxShadow: <BoxShadow>[
               BoxShadow(

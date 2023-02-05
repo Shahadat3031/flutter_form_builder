@@ -30,6 +30,13 @@ class CommonMethods{
     }
     return key;
   }
-  
-  
+
+  // getting image extension
+  String? getFileExtension(int index, String? data) {
+    if (data != null) {
+      return data.substring(data.lastIndexOf('.') + 1);
+    } else {
+     return null;
+    }
+  }
 }
