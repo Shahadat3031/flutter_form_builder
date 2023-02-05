@@ -62,7 +62,6 @@ class _FormBuilderDetailsState extends State<FormBuilderDetails> {
                   Visibility(
                       visible: _con.isFileShow(detailsModel.data![index].type),
                       child: showFilePreview(index)),
-                  // Show a SizeBox if the data is not the last one with 100 height
                   Visibility(
                       visible: index == detailsModel.data!.length - 1,
                       child: const SizedBox(height: 80))
